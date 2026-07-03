@@ -1,3 +1,7 @@
 # Extracted diary output — contains real calendar data, never commit
 diary.json
 *.json.tmp
+
+# Python bytecode
+__pycache__/
+*.pyc

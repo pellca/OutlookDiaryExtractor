@@ -481,7 +481,9 @@ function Invoke-DiaryExport {
     $merge = Merge-DiaryEvents -ExistingEvents $existing -PulledEvents $pulled `
         -WindowFrom $windowFrom -WindowTo $windowTo -NowUtc (Get-Date).ToUniversalTime()
 
-    $ordered = @($merge.Events | Sort-Object -Property start)
+    # Secondary key on id keeps output deterministic for tied start times
+    # (avoids spurious diffs between runs and between implementations).
+    $ordered = @($merge.Events | Sort-Object -Property start, id)
 
     Write-DiaryFile -Path $OutFile -Mailbox $Mailbox -WindowFrom $windowFrom -WindowTo $windowTo -Events $ordered
 
